@@ -43,10 +43,10 @@ class SubRubricManager(models.Manager):
 
 
 class SubRubric(Rudric):
-    objects = SuperRubricManager()
+    objects = SubRubricManager()
 
-    def __Str__(self):
-        return '%s - %s' (self.super_rubric.name, self.name)
+    def __str__(self):
+        return '%s - %s' % (self.super_rubric.name, self.name)
 
     class Meta:
         proxy = True

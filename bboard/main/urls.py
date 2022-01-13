@@ -1,6 +1,9 @@
 from django.urls import path
 from .views import index, other_page, BBLoginView, profile, BBLogoutView, ChangeUserInfoView, BBPasswordChangeView, \
     RegisterDoneView, RegisterUserView, user_activate, DeleteUserView
+from .views import by_rubric
+
+
 
 app_name = "main"
 urlpatterns = [
@@ -10,6 +13,7 @@ urlpatterns = [
     path('accounts/login/', BBLoginView.as_view(), name='login'),
     path('accounts/profile/delete/', DeleteUserView.as_view(), name='profile_delete'),
     path('accounts/password/change', BBPasswordChangeView.as_view(), name='password_change'),
+    path('<int:pk>/', by_rubric, name='by_rubric'),
     path('<str:page>/', other_page, name='other'),
     path('', index, name='index'),
     path('accounts/profile/change', ChangeUserInfoView.as_view(), name='profile_change'),
