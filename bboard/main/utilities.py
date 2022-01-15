@@ -20,4 +20,4 @@ def send_activation_notification(user):
 
 
 def get_timestamp_path(instance, filemame):
-    return "%S%S" % (datetime.now().timestamp(), splitext(filemame)[1])
+    return "%s%s" % (datetime.now().timestamp(), splitext(filemame)[1])
