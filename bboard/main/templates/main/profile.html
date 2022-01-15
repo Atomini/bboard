@@ -31,8 +31,13 @@
                         <p class="text-right font-weight-bold">{{ bb.price }} грн.</p>
                         <p class="text-right font-italic">{{ bb.created_at }}</p>
                     </div>
+                    <p class="text-right mt-2">
+                        <a href="{% url 'main:profile_bb_change' pk=bb.pk %}">Исправить</a>
+                        <a href="{% url 'main:profile_bb_delete' pk=bb.pk %}">Удалить</a>
+                    </p>
                 </li>
             {% endfor %}
+        <p><a href="{% url 'main:profile_bb_add' %}">Добавить объявление</a></p>
         </ul>
     {% endif %}
 {% endblock %}

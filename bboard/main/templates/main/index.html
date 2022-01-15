@@ -23,8 +23,7 @@
                         <p class="text-right font-weight-bold">{{ bb.price }} грн.</p>
                         <p class="text-right font-italic">{{ bb.created_at }}</p>
                         <p class="text-right font-italic">
-                            <a href="{% url 'main:profile_bb_detail' author=bb.author.pk %}">{{ bb.author }}</a>
-                        </p>
+                            <a href="{% url 'main:profile_bb_detail' author=bb.author.pk %}">{{ bb.author }}</a></p>
                     </div>
                 </li>
             {% endfor %}
