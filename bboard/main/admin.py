@@ -1,8 +1,11 @@
-from django.contrib import admin
-from .models import AdvUser, SubRubric, SuperRubric, Bb, AdditionalImage
 import datetime
-from .utilities import send_activation_notification
+
+from django.contrib import admin
+
 from .forms import SubRubricForm
+from .models import AdvUser, SubRubric, SuperRubric, Bb, AdditionalImage, Comment
+from .utilities import send_activation_notification
+
 
 # Register your models here.
 
@@ -73,6 +76,11 @@ class BbAdmin(admin.ModelAdmin):
     inlines = (AdditionalImageInline, )
 
 
+# class CommentAdmin(admin.ModelAdmin):
+#     fields = "__all__"
+
+
+# admin.site.register(Comment, CommentAdmin)
 admin.site.register(Bb, BbAdmin)
 admin.site.register(SubRubric, SubRubricAdmin)
 admin.site.register(SuperRubric, SuperRubricAdmin)

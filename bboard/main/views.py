@@ -1,23 +1,25 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse, Http404
-from django.template import TemplateDoesNotExist
-from django.template.loader import get_template
-from django.contrib.auth.views import LoginView, PasswordChangeView, LogoutView
+from django.contrib import messages
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic.edit import UpdateView, CreateView, DeleteView
-from django.views.generic.base import TemplateView
+from django.contrib.auth.views import LoginView, PasswordChangeView, LogoutView
 from django.contrib.messages.views import SuccessMessageMixin
-from django.urls import reverse_lazy
-from django.core.signing import BadSignature
-from django.contrib.auth import logout
-from django.contrib import messages
 from django.core.paginator import Paginator
+from django.core.signing import BadSignature
 from django.db.models import Q
+from django.http import HttpResponse, Http404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.template import TemplateDoesNotExist
+from django.template.loader import get_template
+from django.urls import reverse_lazy
+from django.views.generic.base import TemplateView
+from django.views.generic.edit import UpdateView, CreateView, DeleteView
 
-from .models import AdvUser, SubRubric, Bb
-from .forms import ChangeUserInfoForm, RegisterUserForm, SearchForm, BbForm, AIFormSet
+from .forms import ChangeUserInfoForm, RegisterUserForm, SearchForm, BbForm, AIFormSet, UserCommentForm, \
+    GuestCommentForm
+from .models import AdvUser, SubRubric, Bb, Comment
 from .utilities import signer
+
 
 # Create your views here.
 
@@ -180,9 +182,25 @@ def by_rubric(request, pk):
 
 
 def detail(request, rubric_pk, pk):
-    bb = get_object_or_404(Bb, pk=pk)
+    bb = Bb.objects.get(pk=pk)
     ais = bb.additionalimage_set.all()
-    context = {'bb': bb, 'ais': ais}
+    comments = Comment.objects.filter(bb=pk, is_active=True)
+    initial = {'bb': bb.pk}
+    if request.user.is_authenticated:
+        initial['author'] = request.user.username
+        form_class = UserCommentForm
+    else:
+        form_class = GuestCommentForm
+    form = form_class(initial=initial)
+    if request.method == 'POST':
+        c_form = form_class(request.POST)
+        if c_form.is_valid():
+            c_form.save()
+            messages.add_message(request, messages.SUCCESS, 'Комментарии добавлен')
+        else:
+            form = c_form
+            messages.add_message(request, messages.WARNING, 'Комментарий не добавлен')
+    context = {'bb': bb, 'ais': ais, "comments": comments, 'form': form}
     return render(request, 'main/detail.html', context)
 
 

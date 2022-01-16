@@ -1,8 +1,8 @@
 from django.urls import path
+
+from .views import by_rubric, detail, profile_bb_detail, profile_bb_add, profile_bb_change, profile_bb_delete
 from .views import index, other_page, BBLoginView, profile, BBLogoutView, ChangeUserInfoView, BBPasswordChangeView, \
     RegisterDoneView, RegisterUserView, user_activate, DeleteUserView
-from .views import by_rubric, detail, profile_bb_detail, profile_bb_add, profile_bb_change, profile_bb_delete
-
 
 app_name = "main"
 
